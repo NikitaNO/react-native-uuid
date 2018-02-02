@@ -32,14 +32,19 @@ var isaac = require( 'isaac' );
     }
 
     if (!_rng) {
-        console.warn("[SECURITY] node-uuid: crypto not usable");
-        try {
-            _rng = function(len){
-                const buf = new Uint8Array(len);
-                return buf.map(function(){ Math.floor(isaac.random() * 256)});
-            };
-            _rng();
-        } catch(e) {}
+        var buf = new Uint8Array(16);
+
+        _whatwgRNG = _rng = function(){
+            var result = buf.map(function(){ return Math.floor(isaac.random() * 256)})
+            console.log(result)
+
+            return result;
+        };
+        _rng();
+
+        if ('undefined' !== typeof console && console.warn) {
+            console.warn("[SECURITY] node-uuid: crypto not usable, falling back to insecure Math.random()");
+        }
     }
   }
 
