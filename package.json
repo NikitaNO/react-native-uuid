@@ -24,6 +24,7 @@
     }
   ],
   "dependencies": {
+    "isaac": "0.0.5",
     "randombytes": "^2.0.3"
   },
   "description": "Rigorous implementation of RFC4122 (v1 and v4) UUIDs for React Native",

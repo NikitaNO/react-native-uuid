@@ -2,6 +2,7 @@
 //
 //     Copyright (c) 2010-2012 Robert Kieffer
 //     MIT License - http://opensource.org/licenses/mit-license.php
+var isaac = require( 'isaac' );
 
 /*global window, require, define */
 (function(_window) {
@@ -32,6 +33,13 @@
 
     if (!_rng) {
         console.warn("[SECURITY] node-uuid: crypto not usable");
+        try {
+            _rng = function(len){
+                const buf = new Uint8Array(len);
+                return buf.map(function(){ Math.floor(isaac.random() * 256)});
+            };
+            _rng();
+        } catch(e) {}
     }
   }
 
