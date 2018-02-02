@@ -2,7 +2,6 @@
 //
 //     Copyright (c) 2010-2012 Robert Kieffer
 //     MIT License - http://opensource.org/licenses/mit-license.php
-var isaac = require( 'isaac' );
 
 /*global window, require, define */
 (function(_window) {
@@ -32,19 +31,20 @@ var isaac = require( 'isaac' );
     }
 
     if (!_rng) {
-        var buf = new Uint8Array(16);
+      // isaac.random()-based (RNG) read more https://en.wikipedia.org/wiki/ISAAC_(cipher)
+      //
+      var _rnds = new Array(16);
 
-        _whatwgRNG = _rng = function(){
-            var result = buf.map(function(){ return Math.floor(isaac.random() * 256)})
-            console.log(result)
+      _mathRNG = _rng = function(){
+          return _rnds = _rnds.map(function(){
+              return Math.floor(isaac.random() * 256)
+          });
+      };
+      _rng();
 
-            return result;
-        };
-        _rng();
-
-        if ('undefined' !== typeof console && console.warn) {
-            console.warn("[SECURITY] node-uuid: crypto not usable, falling back to insecure Math.random()");
-        }
+      if ('undefined' !== typeof console && console.warn) {
+        console.warn("[SECURITY] node-uuid: crypto not usable, falling back to isaac.random()");
+      }
     }
   }
 
